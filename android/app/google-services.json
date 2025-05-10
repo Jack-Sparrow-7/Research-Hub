@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "878611930487",
+    "project_id": "research-hub-d7341",
+    "storage_bucket": "research-hub-d7341.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878611930487:android:f5fa406f64a0f258211572",
+        "android_client_info": {
+          "package_name": "com.example.research_hub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa7neh3czA3RSvse62QRl77Hh87GoTtjo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
