@@ -6,11 +6,12 @@ import 'package:research_hub/core/constants/color_pallete.dart';
 class FilledOutlinedField extends StatelessWidget {
   const FilledOutlinedField({
     super.key,
-    required this.initalValue,
-    required this.text,this.isDone =false,
+    this.initalValue,
+    required this.text,
+    this.isDone = false,
   });
 
-  final String initalValue;
+  final String? initalValue;
   final String text;
   final bool isDone;
   @override
@@ -23,10 +24,9 @@ class FilledOutlinedField extends StatelessWidget {
         return null;
       },
       initialValue: initalValue,
-      textInputAction: isDone?TextInputAction.done:TextInputAction.next,
+      textInputAction: isDone ? TextInputAction.done : TextInputAction.next,
       decoration: InputDecoration(
-        // constraints: BoxConstraints.loose(Size(380.w, 55.w)),
-        contentPadding: EdgeInsets.symmetric(vertical: 18.w, horizontal: 15.w),
+        contentPadding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 15.w),
         fillColor: Colors.white,
         filled: true,
         suffixIconColor: Color.fromRGBO(156, 163, 175, 1),
@@ -41,7 +41,15 @@ class FilledOutlinedField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.r),
-          borderSide: const BorderSide(color: Color.fromRGBO(209, 213, 219, 1)),
+          borderSide: BorderSide(color: Color.fromRGBO(209, 213, 219, 1)),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.r),
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.r),
+          borderSide: BorderSide(color: Colors.red),
         ),
       ),
     );

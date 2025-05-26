@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:research_hub/core/constants/color_pallete.dart';
 import 'package:research_hub/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:research_hub/features/auth/presentation/cubit/auth_status_cubit.dart';
 import 'package:research_hub/features/auth/presentation/cubit/hide_text_cubit.dart';
 import 'package:research_hub/features/auth/presentation/widgets/auth_app_bar.dart';
 import 'package:research_hub/features/auth/presentation/widgets/auth_button.dart';
@@ -52,8 +53,10 @@ class _LoginMobileState extends State<LoginMobile> {
                   duration: Duration(seconds: 2),
                 ),
               );
-            }
-            if (state is Authenticated) {
+            } else if (state is Authenticated) {
+              context.read<AuthStatusCubit>().checkAdminStatus(
+                uid: state.user.uid,
+              );
               emailController.clear();
               passwordController.clear();
               Get.offAllNamed('/main');
@@ -61,7 +64,9 @@ class _LoginMobileState extends State<LoginMobile> {
           },
           builder: (context, state) {
             if (state is AuthLoading) {
-              return CircularProgressIndicator();
+              return CircularProgressIndicator(
+                color: ColorPallete.primaryColor,
+              );
             }
             return SingleChildScrollView(
               reverse: true,
@@ -85,7 +90,11 @@ class _LoginMobileState extends State<LoginMobile> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(17.r),
                     ),
-                    child: LoginForm(formKey: formKey, emailController: emailController, passwordController: passwordController),
+                    child: LoginForm(
+                      formKey: formKey,
+                      emailController: emailController,
+                      passwordController: passwordController,
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
@@ -142,10 +151,7 @@ class LoginForm extends StatelessWidget {
           Gap(40.w),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              "Email",
-              style: GoogleFonts.inter(fontSize: 15.sp),
-            ),
+            child: Text("Email", style: GoogleFonts.inter(fontSize: 15.sp)),
           ),
           Gap(5.w),
           BlocProvider(
@@ -157,15 +163,12 @@ class LoginForm extends StatelessWidget {
               missingText: "Email",
             ),
           ),
-    
+
           Gap(27.w),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Password",
-                style: GoogleFonts.inter(fontSize: 15.sp),
-              ),
+              Text("Password", style: GoogleFonts.inter(fontSize: 15.sp)),
               GestureDetector(
                 onTap: () => Get.toNamed('/forgotPassword'),
                 child: Text(

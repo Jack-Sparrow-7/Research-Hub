@@ -52,7 +52,6 @@ class _ForgotPasswordMobileState extends State<ForgotPasswordMobile> {
             if (state is ForgotPasswordLoading) {
               return CircularProgressIndicator();
             } else if (state is ForgotPasswordLoaded) {
-              emailController.clear();
               return Container(
                 padding: EdgeInsets.all(25.r),
                 height: 300.w,
@@ -84,11 +83,13 @@ class _ForgotPasswordMobileState extends State<ForgotPasswordMobile> {
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         padding: EdgeInsets.symmetric(
-                          vertical: 10.w,
+                          vertical: 20.w,
                           horizontal: 30.w,
                         ),
                       ),
-                      onPressed: () => Get.offAllNamed('/login'),
+                      onPressed: () {
+                        Get.offAllNamed('/login');
+                      },
                       child: Text(
                         "Ok",
                         style: GoogleFonts.poppins(

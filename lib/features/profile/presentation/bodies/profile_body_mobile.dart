@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:research_hub/core/constants/color_pallete.dart';
+import 'package:research_hub/features/auth/presentation/cubit/auth_status_cubit.dart';
 import 'package:research_hub/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:research_hub/features/profile/presentation/cubit/notification_cubit.dart';
 import 'package:research_hub/main%20screen/cubit/page_index_cubit.dart';
@@ -29,6 +30,7 @@ class ProfileBodyMobile extends StatelessWidget {
       listener: (context, state) {
         if (state is ProfileLoggedOut) {
           Get.offAllNamed('/login');
+          context.read<AuthStatusCubit>().onLogout();
           context.read<PageIndexCubit>().onPressed(0);
         } else if (state is ProfileError) {
           Get.showSnackbar(
@@ -222,8 +224,11 @@ class ProfileBodyMobile extends StatelessWidget {
               Gap(30.w),
               TextButton.icon(
                 style: TextButton.styleFrom(
-                  textStyle: GoogleFonts.inter(fontSize: 18.sp),
-                  padding: EdgeInsets.symmetric(vertical: 18.w),
+                  textStyle: GoogleFonts.inter(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 25.w),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.r),
                   ),

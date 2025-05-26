@@ -7,10 +7,13 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:research_hub/core/constants/color_pallete.dart';
+import 'package:research_hub/features/auth/presentation/cubit/auth_status_cubit.dart';
 import 'package:research_hub/features/explore/presentation/bodies/explore_body_mobile.dart';
 import 'package:research_hub/features/favorites/presentation/bodies/favorites_body_mobile.dart';
 import 'package:research_hub/features/home/presentation/bodies/home_body_mobile.dart';
 import 'package:research_hub/features/profile/presentation/bodies/profile_body_mobile.dart';
+import 'package:research_hub/features/projects/presentation/bodies/add_project_body_mobile.dart';
+import 'package:research_hub/features/projects/presentation/bodies/your_projects_body_mobile.dart';
 import 'package:research_hub/main%20screen/cubit/page_index_cubit.dart';
 
 class MainMobile extends StatelessWidget {
@@ -18,11 +21,14 @@ class MainMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAdmin = context.watch<AuthStatusCubit>().state;
     final bodies = [
       HomeBodyMobile(),
       ExploreBodyMobile(),
       FavoritesBodyMobile(),
       ProfileBodyMobile(),
+      if (isAdmin) AddProjectBodyMobile(),
+      if (isAdmin) YourProjectsBodyMobile(),
     ];
     final String? image = FirebaseAuth.instance.currentUser!.photoURL;
     final bool isImage = image != null;
@@ -103,6 +109,24 @@ class MainMobile extends StatelessWidget {
                   title: Text("Profile"),
                   leading: Icon(Iconsax.user),
                 ),
+                if (isAdmin)
+                  ListTile(
+                    onTap: () => context.read<PageIndexCubit>().onPressed(4),
+
+                    selected: state == 4 ? true : false,
+                    selectedColor: ColorPallete.primaryColor,
+                    title: Text("Add Project"),
+                    leading: Icon(Iconsax.add_circle),
+                  ),
+                if (isAdmin)
+                  ListTile(
+                    onTap: () => context.read<PageIndexCubit>().onPressed(5),
+
+                    selected: state == 5 ? true : false,
+                    selectedColor: ColorPallete.primaryColor,
+                    title: Text("Your Projects"),
+                    leading: Icon(Iconsax.folder_open),
+                  ),
               ],
             ),
           );

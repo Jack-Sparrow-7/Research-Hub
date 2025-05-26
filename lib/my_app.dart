@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:research_hub/core/constants/color_pallete.dart';
+import 'package:research_hub/core/auth%20checking/auth_check.dart';
 import 'package:research_hub/core/responsive/device_info_service.dart';
 import 'package:research_hub/core/screen%20routes/screen_routes.dart';
 import 'package:research_hub/features/auth/data/data%20sources/firebase_auth_source.dart';
@@ -15,7 +14,7 @@ import 'package:research_hub/features/auth/domain/usecases/forgot_password_useca
 import 'package:research_hub/features/auth/domain/usecases/login_usecase.dart';
 import 'package:research_hub/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:research_hub/features/auth/presentation/bloc/forgot_password_bloc.dart';
-import 'package:research_hub/features/auth/presentation/screens/login%20screen/login_screen.dart';
+import 'package:research_hub/features/auth/presentation/cubit/auth_status_cubit.dart';
 import 'package:research_hub/features/explore/data/data%20source/explore_data_source.dart';
 import 'package:research_hub/features/explore/data/repositories/explore_repository_impl.dart';
 import 'package:research_hub/features/explore/domain/usecases/get_categories_usecase.dart';
@@ -30,12 +29,12 @@ import 'package:research_hub/features/profile/domain/usecases/change_password_us
 import 'package:research_hub/features/profile/domain/usecases/logout_usecase.dart';
 import 'package:research_hub/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:research_hub/features/profile/presentation/cubit/notification_cubit.dart';
+import 'package:research_hub/features/projects/presentation/cubit/team_members_cubit.dart';
 import 'package:research_hub/main%20screen/cubit/page_index_cubit.dart';
 import 'package:research_hub/features/projects/data/data%20source/project_data_source.dart';
 import 'package:research_hub/features/projects/data/repositories/project_repository_impl.dart';
 import 'package:research_hub/features/projects/domain/usecases/get_projects_usecase.dart';
 import 'package:research_hub/features/projects/presentation/bloc/project_bloc.dart';
-import 'package:research_hub/main%20screen/main_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -151,8 +150,13 @@ class MyApp extends StatelessWidget {
                   ),
                 )..add(FetchProjects()),
           ),
+          BlocProvider(create: (context) => AuthStatusCubit()),
+          BlocProvider(create: (context) => TeamMembersCubit()),
         ],
         child: GetMaterialApp(
+          builder: (context, child) {
+            return MouseRegion(cursor: SystemMouseCursors.basic, child: child!);
+          },
           theme: ThemeData(
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Colors.blue,
@@ -162,23 +166,7 @@ class MyApp extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           getPages: screenRoutes(),
-          home: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(
-                      color: ColorPallete.primaryColor,
-                    ),
-                  ),
-                );
-              } else if (snapshot.data != null) {
-                return MainScreen();
-              }
-              return LoginScreen();
-            },
-          ),
+          home: AuthCheck(),
         ),
       ),
     );

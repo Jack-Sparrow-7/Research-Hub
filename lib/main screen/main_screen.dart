@@ -7,7 +7,8 @@ import 'package:research_hub/main%20screen/main_desktop.dart';
 import 'package:research_hub/main%20screen/main_mobile.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  const MainScreen({super.key,});
+
 
   @override
   State<MainScreen> createState() => _MainScreenState();

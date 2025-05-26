@@ -16,6 +16,7 @@ class FirebaseAuthSource {
       password: password,
     );
     final user = result.user!;
+    
     return UserEnitity(email: user.email!, uid: user.uid);
   }
 
